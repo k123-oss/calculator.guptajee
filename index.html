@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gupta Jee Surprise Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .calculator {
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+        }
+        input, button {
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            font-size: 1.5em;
+            text-align: center;
+            border-radius: 10px;
+        }
+        #result {
+            width: 240px;
+            height: 60px;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            text-align: right;
+            padding: 10px;
+        }
+        .surprise-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        #startButton {
+            margin-top: 20px;
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="mainHeading">Surprise Calculator 🤫</h1>
+
+    <p id="namePrompt">What's your name?</p>
+    <input type="text" id="userName" placeholder="Enter your name" onkeydown="if(event.key === 'Enter') startCalculator()">
+    <br>
+    <button id="startButton" onclick="startCalculator()">Start Calculator</button>
+
+    <div id="calculatorSection" style="display: none;">
+        <div class="calculator">
+            <input type="text" id="result" disabled>
+            <br>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="performOperation('+')">+</button>
+            <br>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="performOperation('-')">-</button>
+            <br>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="performOperation('*')">*</button>
+            <br>
+            <button onclick="clearResult()">C</button>
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="showSurprise()">=</button>
+            <button onclick="performOperation('/')">/</button>
+        </div>
+
+        <div id="surpriseMessage" class="surprise-message"></div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        let operator = '';
+        let previousInput = '';
+        let fullExpression = '';
+        let userName = '';
+
+        const funnyMessages = [
+            "Oops! Gupta Jee says no math today for you, [NAME]! 🎉",
+            "Gupta Jee says: [NAME], life is too short for serious calculations. 😎",
+            "[NAME], Gupta Jee doesn’t care about your math, it's his party time! 🎈",
+            "Math can wait, [NAME], it's Gupta Jee's special day! 🍰",
+            "[NAME], numbers? What are those? It's Gupta Jee's celebration time! 🎂",
+            "Hey [NAME], calculating is overrated when there's cake! 🎂",
+            "No math for you, [NAME]! Only birthday wishes allowed! 🎊",
+            "Dear [NAME], your math can take a break, it's Gupta Jee's turn to shine! 🌟",
+            "[NAME], who needs math when you can party instead? 🎉",
+            "Gupta Jee invites you to dance, not calculate, [NAME]! 💃"
+        ];
+
+        function startCalculator() {
+            userName = document.getElementById('userName').value;
+            if (userName === '') {
+                alert("Please enter your name to start!");
+                return;
+            }
+            document.getElementById('namePrompt').style.display = 'none';
+            document.getElementById('userName').style.display = 'none';
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('calculatorSection').style.display = 'block';
+            document.getElementById('mainHeading').textContent = `${userName}'s Surprise Calculator 🤫`;
+        }
+
+        function appendValue(value) {
+            currentInput += value;
+            fullExpression += value;
+            document.getElementById('result').value = fullExpression;  // Show full expression on the screen
+        }
+
+        function performOperation(op) {
+            if (currentInput === '') return; // Prevent multiple operators without numbers
+            operator = op;
+            previousInput = currentInput;
+            currentInput = '';
+            fullExpression += ' ' + op + ' ';
+            document.getElementById('result').value = fullExpression;
+        }
+
+        function showSurprise() {
+            if (previousInput === '' || currentInput === '') return; // Prevent calculating without proper input
+
+            // Just show the full expression but not the result
+            document.getElementById('result').value = fullExpression;
+
+            // Select a random funny message and replace [NAME] with the user's name
+            const randomIndex = Math.floor(Math.random() * funnyMessages.length);
+            const personalizedMessage = funnyMessages[randomIndex].replace('[NAME]', userName);
+            document.getElementById('surpriseMessage').textContent = personalizedMessage;
+
+            // Change heading to make it more surprising
+            document.getElementById('mainHeading').textContent = "Surprise! 🎉 It's Gupta Jee's Day!";
+        }
+
+        function clearResult() {
+            currentInput = '';
+            operator = '';
+            previousInput = '';
+            fullExpression = '';
+            document.getElementById('result').value = '';
+            document.getElementById('surpriseMessage').textContent = '';
+            document.getElementById('mainHeading').textContent = `${userName}'s Surprise Calculator 🤫`;
+        }
+    </script>
+
+</body>
+</html>
